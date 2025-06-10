@@ -42,11 +42,11 @@ const Dashboard = () => {
     useEffect(() => {
             signInWithEmailPassword.then((success) => {
             if(!success) return;
-            const temperatureRef = ref(database, "iot/device/temperature");
+            const tempRef = ref(database, "iot/device/temperature");
             const humidityRef = ref(database, "iot/device/humidity");
-            const gasLevelRef = ref(database, "iot/device/gas");
-            const lightStatusRef = ref(database, "iot/device/ldr");
-            const flameStatusRef = ref(database, "iot/device/flame");
+            const gasRef = ref(database, "iot/device/gas");
+            const lightRef = ref(database, "iot/device/ldr");
+            const flameRef = ref(database, "iot/device/flame");
             onValue(tempRef, (snapshot) => {
                 const data = snapshot.val();
                 if(data !== null) {
