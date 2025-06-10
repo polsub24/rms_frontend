@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 const Dashboard = () => {
 const temperature = 32;
   const humidity = 44;
-  const lightStatus = "Dark";
+  const lightStatus = "Light";
   const flameStatus = "No flame";
   const gasLevel = 144;
   return (
@@ -58,12 +58,81 @@ const temperature = 32;
                   💧
                 </div>
               </div>
-    
+     <div className=" w-52 h-52 md:w-[35rem] md:h-40 border-2 rounded-full md:rounded-s-full md:rounded-r-none transition-all border-purple-800 bg-[#121021] shadow-[0_0_15px_#d946ef] flex items-center px-10 md:px-8 cursor-pointer hover:-translate-y-2">
+                <div className="text-white ml-5">
+                  <p className=" text-md md:text-lg uppercase tracking-wide text-purple-300">
+                    Gas Level
+                  </p>
+                  <p className="text-xl md:text-4xl font-semibold text-purple-400 mt-1">
+                    {gasLevel}
+                  </p>
+                  <p className=" hidden md:flex text-sm text-gray-400 mt-2">
+                    Air quality reading
+                  </p>
+                </div>
+                <div className="ml-auto text-5xl text-purple-400 opacity-70">
+                  ♨️
+                </div>
+              </div>
     
     
      </div>         
             
-    </div></div></div>
+    </div>
+    <div className="flex flex-col space-y-14 md:space-y-4 md:flex-row m-8 ml-12 md:ml-32 md:space-x-20 justify-center mb-16">
+            <div
+              className={`w-52 h-52 md:w-[20rem] md:h-[20rem] border-2 rounded-full border-yellow-800 ${
+                lightStatus === "Light"
+                  ? "bg-gradient-to-r from-[#1B1833] to-yellow-900 shadow-[0_0_15px_#facc15]"
+                  : "bg-[#121021] shadow-[0_0_15px_#facc15]"
+              } flex flex-col justify-center items-center transition-all duration-500 cursor-pointer hover:-translate-y-2 md:ml-8`}
+            >
+              <p className="text-yellow-300 text-xl uppercase tracking-wide mb-2">
+                Light Status
+              </p>
+              <p className="text-3xl md:text-5xl font-semibold text-yellow-400 mb-4">
+                {lightStatus}
+              </p>
+              <div
+                className={`text-4xl md:text-7xl ${
+                  lightStatus === "Light"
+                    ? "opacity-100 drop-shadow-[0_0_20px_#facc15] "
+                    : "opacity-30"
+                } transition-all duration-500`}
+              >
+                🌞
+              </div>
+            </div>
+            <div className="flex md:pt-16 md:pl-24 ">
+              <div
+                className={`w-52 h-52 md:w-[35rem] md:h-40 border-2 rounded-full md:rounded-e-full md:rounded-l-none ${
+                  flameStatus === "Flame"
+                    ? "border-orange-400 bg-gradient-to-r from-[#1B1833] via-orange-600 to-red-900 shadow-[0_0_15px_orange]"
+                    : "bg-[#121021] border-green-800 shadow-[0_0_15px_#4ade80]"
+                }    flex flex-col md:flex-row justify-center md:justify-between px-5 items-center transition-all duration-500 cursor-pointer hover:-translate-y-2 md:ml-5`}
+              >
+                <div className="md:flex md:flex-col md:gap-1">
+                  <p className="text-green-300 text-xl uppercase tracking-wide mb-2">
+                    Flame Status
+                  </p>
+                  <p className="text-2xl text-center md:text-4xl font-semibold text-green-400 mb-4">
+                    {flameStatus}
+                  </p>
+                </div>
+                <div
+                  className={`text-4xl md:text-7xl ${
+                    flameStatus === "Flame"
+                      ? "text-red-500 drop-shadow-[0_0_20px_red] animate-pulse "
+                      : "opacity-30 text-gray-500"
+                  } transition-all duration-500`}
+                >
+                  🔥
+                </div>
+              </div>
+            </div>
+            
+        </div>           
+    </div></div>
 
 </div> 
   );
