@@ -1,11 +1,86 @@
 import React, { useState, useEffect } from "react";
+import {initializeApp} from "firebase/app";
+import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
+import {getDatabase, onValue, ref} from "firebase/database";
+
+const firebaseConfig = {
+    apikey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
+
 const Dashboard = () => {
-const temperature = 32;
-  const humidity = 44;
-  const lightStatus = "Light";
-  const flameStatus = "No flame";
-  const gasLevel = 144;
-  return (
+    const signInWithEmailPassword = async() => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(
+                auth,
+                "roommonitoringtest@gmail.com",
+                "room123"
+            );
+            console.log ("User signed in:", userCredential.user.email);
+            return true;
+        } catch (error) {
+            console.error("Error signing in:", error.code, error.message);
+            return false;
+        }
+    };
+    const [temperature, setTemperature] = useState("loading...");
+    const [humidity, setHumidity] = useState("loading...");
+    const [gasLevel, setGasLevel] = useState("loading...");
+    const [lightStatus, setLightStatus] = useState("loading...");
+    const [flameStatus, setFlameStatus] = useState("loading...");
+
+    useEffect(() => {
+            signInWithEmailPassword.then((success) => {
+            if(!success) return;
+            const temperatureRef = ref(database, "iot/device/temperature");
+            const humidityRef = ref(database, "iot/device/humidity");
+            const gasLevelRef = ref(database, "iot/device/gas");
+            const lightStatusRef = ref(database, "iot/device/ldr");
+            const flameStatusRef = ref(database, "iot/device/flame");
+            onValue(tempRef, (snapshot) => {
+                const data = snapshot.val();
+                if(data !== null) {
+                    setTemperature(data);
+                }
+            });
+            onValue(humidityRef, (snapshot) => {
+                const data = snapshot.val();
+                if(data !== null) {
+                    setHumidity(data);
+                }
+            });
+            onValue(gasRef, (snapshot) => {
+                const data = snapshot.val();
+                if(data !== null) {
+                    setGasLevel(data);
+                }
+            });
+            onValue(lightRef, (snapshot) => {
+                const data = snapshot.val();
+                if(data !== null) {
+                    setLightStatus(data);
+                }
+            });
+            onValue(flameRef, (snapshot) => {
+                const data = snapshot.val();
+                if(data !== null) {
+                    setFlameStatus(data);
+                }
+            });
+    })
+},[]);
+
+            return (
     <div className="bg-[#1B1833] text-white flex flex-col justify-center overflow-x-hidden">
       <div className="flex justify-center md:max-h-full max-h-[84px]">
         <nav className="flex text-md sm:text-xl md:text-3xl p-6  font-mono">
